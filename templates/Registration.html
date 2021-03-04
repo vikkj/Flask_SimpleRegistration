@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    function validation() {
+        var name = document.getElementsByName('name')[0].value
+        var email = document.getElementsByName('email')[0].value
+        var gender = document.getElementsByName('gender')[0].value
+        var ph = document.getElementsByName('ph')[0].value
+        var add = document.getElementsByName('add')[0].value
+        var edu = document.getElementsByName('edu')[0].value
+        var skill = document.getElementsByName('skill')[0].value
+        var cert = document.getElementsByName('cert')[0].value
+        if (name.trim()=='') {
+            alert('Name field empty')
+            return false
+        }
+        if (name.length<3||name.length>20) {
+            alert('Name too short(less than 3 characters) or name too long(more than 20 characters)')
+            return false
+        }
+        else if (email.trim()=='') {
+            alert('Email field empty')
+            return false
+        }
+        else if (email.search(/\.com$/)<0){
+            alert('Email domain name missing')
+            return false
+        }
+        else if (ph.trim()=='') {
+            alert('Phone Number field empty')
+            return false
+        }
+        else if (ph.match(/^\+\d{12}$/)==null) {
+            alert('Phone Number should contain 10 digits with 2 digit country code (i.e "+91")')
+            return false
+        }
+        else if (ph.match(/^\+91\d{10}$/)==null) {
+            alert('Phone Number should be according to indian phone standard (i.e "+91")')
+            return false
+        }
+        else if (ph.match(/^\+91[9876]\d{9}$/)==null) {
+            alert('Phone Number should start with 9,8,7,6')
+            return false
+        }
+        else if (add.trim()=='') {
+            alert('Address field empty')
+            return false
+        }
+        else if (edu.trim()=='') {
+            alert('Education field empty')
+            return false
+        }
+        else if (skill.trim()=='') {
+            alert('Skill field empty')
+            return false
+        }
+        else if (cert.trim()=='') {
+            alert('Certificate field empty')
+            return false
+        }
+        else return true
+
+    }
+</script>
+<style>
+    .border {
+        border: solid 2px;
+    }
+    body {
+        background-color: beige;
+        padding: 5%;
+    }
+</style>
+<body>
+    <div>
+        {% if flag %}
+        <h1 align=center>User Details</h1>
+        <h1>Hello {{user}}</h1>
+        
+    </div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% endwith %}
+    <form action="" method="POST" onsubmit="return validation()" enctype="multipart/form-data">
+        {% if loginc==0 %}
+        <label for="name">Name</label><br>
+        <input name='name' id='name' type="text" required><br>
+        <label for="email">Email</label><br>
+        <input name='email' id='email' type="email" value={{user}} disabled><br>
+        <label for="gender">Gender</label><br>
+        <select name="gender" id="gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select><br>
+        <label for="ph">Phone</label><br>
+        <input name='ph' id='ph' type="tel" required><br>
+        <label for="add">Address</label><br>
+        <input name='add' id='add' type="text" required><br>
+        <label for="skill">Skills</label><br>
+        <input name='skill' id='skill' type="text" required><br>
+        <label for="edu">Education</label><br>
+        <select name="edu" id="edu">
+            <option value="grad">Graduate</option>
+            <option value="postgrad">Post-Graduate</option>
+            <option value="diploma">Diploma</option>
+        </select><br>
+        <label name='special' for="special">Specialization</label><br>
+        <input name='special' id='special' type="text"><br>
+        <label for="cert">Certifications</label><br>
+        <input name='cert' id='cert' type="text" required><br>
+        <label for="file">Upload Profile image</label>
+        <input type="file" id="file" name="file" required><br>
+        <button type="submit">Submit</button>
+        {% else %}
+        <label for="name">Name</label><br>
+        <input name='name' id='name' type="text" required value={{Userdata.username}} disabled><br>
+        <label for="email">Email</label><br>
+        <input name='email' id='email' type="email" required value={{Userdata.email}} disabled><br>
+        <label for="gender">Gender</label><br>
+        <select name="gender" id="gender" value={{Userdata.gender}} disabled>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select><br>
+        <label for="ph">Phone</label><br>
+        <input name='ph' id='ph' type="tel" value={{Userdata.phoneno}} required><br>
+        <label for="add">Address</label><br>
+        <input name='add' id='add' type="text" value={{Userdata.address}} required><br>
+        <label for="skill">Skills</label><br>
+        <input name='skill' id='skill' type="text" value={{Userdata.skill}} required><br>
+        <label for="edu">Education</label><br>
+        <select name="edu" id="edu" value='{{Userdata.education}}'>
+            <option value="grad">Graduate</option>
+            <option value="postgrad">Post-Graduate</option>
+            <option value="diploma">Diploma</option>
+        </select><br>
+        <label name='special' for="special">Specialization</label><br>
+        <input name='special' id='special' type="text" value={{Userdata.specialization}}><br>
+        <label for="cert">Certifications</label><br>
+        <input name='cert' id='cert' type="text" value={{Userdata.certification}} required><br>
+        <img src="data:;base64,{{ Image }}" alt=""><br>
+        <button type="submit">Submit</button>
+        {% endif %}
+    </form>
+    <button><a href="/logout">LogOut</a></button>
+    {% else %}
+        <h1>Hello Guest</h1>
+        <span>To update or add data please login at <a href="/">Home</a></span>
+    {% endif %}
+</body>
+</html>

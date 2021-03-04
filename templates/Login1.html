@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    function validate()
+    {
+        var uname = document.getElementsByName('uname')[0].value;
+        var pass = document.getElementsByName('pass')[0].value;
+        if (uname.trim()=='') {
+            alert('Username field empty')
+            return false
+        }
+        else if (pass.trim()=='') {
+            alert('Password field empty')
+            return false
+        }
+        else return true;
+    }
+</script>
+<style>
+    .border {
+        border: solid 2px;
+    }
+    body {
+        background-color: beige;
+        padding: 5%;
+    }
+</style>
+<body>
+    <h1 align=center>Login</h1>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% endwith %}
+<div class="border">
+    <form action="/login" method="POST" onsubmit="return validate()">
+        <label for="uname">Email</label><br>
+        <input name='uname' type="text" required><br>
+        <label for="pass">Password</label><br>
+        <input name='pass' type="password" required><br>
+        <button type="submit">Submit</button>
+    </form>
+    <button><a href="/authorize_email">New To Join! Click Here</a></button>
+    <button><a href="/glogin">Login with Google</a></button>
+</div>
+</body>
+</html>

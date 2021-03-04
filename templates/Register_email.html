@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function validate() {
+            var email = document.getElementsByName('email')[0].value;
+            var pass = document.getElementsByName('pass')[0].value;
+            var pass1 = document.getElementsByName('pass1')[0].value;
+
+            if (email.trim()==''){
+                alert('Email field empty!')
+                return false
+            }
+            else if (email.search(/\.com$/)<0){
+            alert('Email domain name missing')
+            return false
+            }
+            else if (pass.trim()==''){
+                alert('Password field empty!')
+                return false
+            }
+            else if (pass!=pass1){
+                alert('Passwords dont match!')
+                return false
+            }
+            else return true
+        }
+    </script>
+    <style>
+        .border {
+            border: solid 2px;
+        }
+        body {
+            background-color: beige;
+            padding: 5%;
+        }
+    </style>
+</head>
+<body>
+    <h1 align=center>Email Registration</h1>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% endwith %}
+    <form class="border" action="/authorize_email" method="post" onsubmit="return validate()">
+        <label for="email">New Email</label><br>
+        <input type="email" name="email" id="email"><br>
+        <label for="pass">Enter Password</label><br>
+        <input type="password" name="pass" id="pass"><br>
+        <label for="pass1">Reenter Password</label><br>
+        <input type="password" name="pass1" id="pass1"><br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
